@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
+# -*- coding: utf-8; tab-width: 4; indent-tabs-mode: t -*-
 
 import os
 import re
@@ -13,17 +13,31 @@ class PgsFormatError(Exception):
     pass
 
 
-class SmsVerificationCodeReceiver:
+class VerificationCodeReceiver:
 
-    DEFAULT_TIMEOUT = 5 * 60         # 5 minutes
+    DEFAULT_TIMEOUT = 5 * 60            # 5 minutes
 
-    def __init__(self, country, private, timeout=None, dirPrefix="/"):
+    SECURE_LEVEL_PUBLIC = 1             # the verification is not important, can be seen by the world
+    SECURE_LEVEL_PRIVATE = 2            # the verification should not be see by others
+    SECURE_LEVEL_SECERET = 3            # we only beleive our self
+
+    VC_TYPE_SMS = 1
+    VC_TYPE_VOICE = 2
+
+    def __init__(self, country, secureLevel, vcType, timeout=None, dirPrefix="/"):
         assert country is not None   # FIXME
+        assert secureLevel in [self.SECURE_LEVEL_PUBLIC, self.SECURE_LEVEL_PRIVATE, self.SECURE_LEVEL_SECERET]
+        assert vcType in [self.VC_TYPE_SMS, self.VC_TYPE_VOICE]
         assert isinstance(private, bool)
+
+        # we don't support voice verification code yet
+        assert vcType == self.VC_TYPE_SMS
 
         self.country = country
         self.private = private
-        self.timeout = SmsVerificationCodeReceiver.DEFAULT_TIMEOUT if timeout is None else timeout
+        self.secureLevel = secureLevel
+        self.vcType = vcType
+        self.timeout = self.DEFAULT_TIMEOUT if timeout is None else timeout
         self.dirPrefix = dirPrefix
 
     def refresh(self):
@@ -44,6 +58,41 @@ class SmsVerificationCodeReceiver:
     def receiveCodeByRegexPattern(self, regexPattern):
         assert False
         return None
+
+    def 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
