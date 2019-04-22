@@ -8,12 +8,18 @@ import fcntl
 import errno
 import shutil
 
+import web_public.becmd
+import web_public.cnwml
+import web_public.pdflibr
+import web_public.receivingsms
+import web_public.zsms
 
-class PgsFormatError(Exception):
+
+class NoMorePhoneNumberError(Exception):
     pass
 
 
-class VerificationCodeReceiver:
+class PhoneVerificationCodeReceiver:
 
     DEFAULT_TIMEOUT = 5 * 60            # 5 minutes
 
@@ -33,12 +39,25 @@ class VerificationCodeReceiver:
         # we don't support voice verification code yet
         assert vcType == self.VC_TYPE_SMS
 
+        self.etcDir = "/etc/verification-code-receiver"
+        self.varDir = "/var/verification-code-receiver"
+
         self.country = country
         self.private = private
         self.secureLevel = secureLevel
         self.vcType = vcType
         self.timeout = self.DEFAULT_TIMEOUT if timeout is None else timeout
         self.dirPrefix = dirPrefix
+
+        self.webPublicList = None
+        self.webPrivateList = None
+        self.deviceList = None
+        self._loadPlugins()
+
+        self.
+
+
+
 
     def refresh(self):
         pass
@@ -59,11 +78,27 @@ class VerificationCodeReceiver:
         assert False
         return None
 
-    def 
+    def _loadPlugins(self):
+        self.webPublicList = [
+            web_public.becmd.PluginObject(),
+            web_public.cnwml.PluginObject(),
+            web_public.pdflibr.PluginObject(),
+            web_public.receivingsms.PluginObject(),
+            web_public.zsms.PluginObject(),
+        ]
+        self.webPrivateList = [
+        ]
+        self.deviceList = [
+        ]
+
+    def _loadPhoneNumberInfo(self):
+        pass
 
 
+class _PhoneNumberCache:
 
-
+    def __init__(self):
+        self.lastSeen = None    # date
 
 
 
@@ -224,6 +259,12 @@ class MobilePhoneSpider(HelloCrawlSpider):
             result_dict[col] = a_dict[col]
         return result_dict
 
+
+class _PhoneNumber:
+
+    def __init__(self):
+        self.number = None      # str
+        self.country = None     # str
 
 
 

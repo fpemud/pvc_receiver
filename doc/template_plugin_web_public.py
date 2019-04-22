@@ -11,7 +11,7 @@ class PluginObject:
     def isAlive(self):
         assert False
 
-    def getPhoneNumbers(self, country):
+    def getPhoneNumbers(self):
         assert False
 
     def receiveCode(self, phoneNumber):
